@@ -1,0 +1,92 @@
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int **transp (int n, int m, int **a) //a[n][m] => at[m][n]
+{ 
+    int **at=(int**)malloc(m*sizeof(int *));
+    int i,j;
+    
+    if (at==NULL) 
+        return NULL;
+        
+    for (i=0; i<m; i++) 
+    {
+        at[i]=(int*)malloc(n*sizeof(int));
+        if (at[i]==NULL) return NULL;
+    }
+    
+    for (i=0; i<n; i++) 
+        for (j=0; j<m; j++) 
+            at[j][i]=a[i][j];
+            
+    return at;
+}
+ 
+void print_matrix(int n,int m,int **a) 
+{
+    int i,j;
+    
+    for (int i=0; i<n; i++) 
+    {
+        printf ("\n");
+        for (int j=0; j<m; j++) 
+            printf ("%d ",a[i][j]);
+    }
+    
+    printf("\n");
+}
+
+void fill_matrix(int n,int m, int *a[], int num)
+{
+    int i,j;
+    
+    for (i=0; i<n; i++) 
+    {
+        for (j=0; j<m; j++)
+        {
+            a[i][j] = num;
+            num++;
+        }
+    }
+}
+
+void muptipl_matrix(int *a[], int *at[], int*ma[], int n, int m)
+{
+    int i,j,k;
+    
+    for (i=0;i<n;i++)
+    {
+        for (j=0;j<m;j++)
+        {
+            ma[i][j]=0;
+            for(k=0; k<m;k++)
+            {
+                ma[i][j]+=a[i][k]*at[k][j];
+            }
+        }
+    }
+}
+ 
+int main() 
+{
+    const int n=5,m=2, num=10;
+    int **a, **ma, i,j;
+    
+    a=(int**)malloc(n*sizeof(int *));
+    for (i=0; i<n; i++) 
+        a[i]=(int*)malloc(m*sizeof(int));
+    
+    ma=(int**)malloc(m*sizeof(int));
+    for (i=0; i<m; i++) 
+        a[i]=(int*)malloc(m*sizeof(int));
+        
+    fill_matrix(5,2,a,10);
+    print_matrix(n,m,a);
+    
+    int **at=transp(n,m,a);
+    print_matrix(m,n,at);
+    
+    muptipl_matrix(a,at,ma,n,m);
+    print_matrix(2,2,ma);
+    return 0;
+}
